@@ -22,6 +22,15 @@
   .meta span { display:inline-block; margin-right:18px; }
   code { font-family:ui-monospace, Menlo, Consolas, monospace; font-size:13px; background:#f0f0ee; padding:1px 5px; border-radius:4px; }
   a { color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+  .btn {
+    display:inline-block; margin-top:8px; padding:10px 18px;
+    border:1px solid var(--ink); border-radius:999px;
+    font-size:14px; text-decoration:none; letter-spacing:.02em;
+    transition:background .15s ease, color .15s ease;
+  }
+  .btn:hover { background:var(--ink); color:#fbfbfa; }
+  .btn span { display:inline-block; transform:translateX(0); transition:transform .15s ease; }
+  .btn:hover span { transform:translateX(3px); }
 </style>
 </head>
 <body>
@@ -32,10 +41,11 @@
   <p>喜欢把东西拆开，再装回去，要比原来干净。</p>
   <p>手上卡着一个本地反代，上游凭据那关。旁边一块旧屏，排线太细，还没敢动。</p>
 
+  <p><a class="btn" href="./works.html">做过的 <span>→</span></a></p>
+
   <hr>
 
   <div class="meta">
-    <a href="./works.html">做过的</a>
     <span>GitHub <a href="https://github.com/Xingyu-Xingyi">Xingyu-Xingyi</a></span>
   </div>
 </main>
