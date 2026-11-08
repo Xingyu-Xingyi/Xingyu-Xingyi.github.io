@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>做过的</title>
+<style>
+  :root {
+    --ink:#15161a;
+    --dim:#7a7f88;
+    --line:#e6e6e9;
+    --accent:#3b5bdb;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #eef1ff 0%, transparent 60%),
+      #fbfbfa;
+    color:var(--ink);
+    font:16px/1.85 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
+    padding:72px 24px 96px;
+  }
+  main { width:100%; max-width:580px; margin:0 auto; }
+  header { margin-bottom:52px; }
+  h1 {
+    font-size:26px; font-weight:600; margin:0 0 8px;
+    letter-spacing:.01em;
+  }
+  .sub { color:var(--dim); font-size:13px; margin:0; }
+  .sub a { color:var(--dim); }
+  h2 {
+    font-size:11px; font-weight:600; color:var(--dim);
+    letter-spacing:.18em; text-transform:uppercase;
+    margin:44px 0 6px; padding-bottom:10px; border-bottom:1px solid var(--line);
+  }
+  dl { margin:0; }
+  dt {
+    font-weight:600; margin:22px 0 4px; font-size:15.5px;
+    display:flex; gap:8px; align-items:baseline;
+  }
+  dt::before {
+    content:""; width:5px; height:5px; border-radius:50%;
+    background:var(--accent); opacity:.55; flex:none; transform:translateY(-3px);
+  }
+  dd { margin:0 0 4px 13px; color:#3d3f45; }
+  code {
+    font-family:ui-monospace, Menlo, Consolas, monospace; font-size:13px;
+    background:#f1f1f3; padding:1px 5px; border-radius:4px;
+  }
+  a { color:var(--ink); text-underline-offset:3px; text-decoration-color:var(--line); }
+  a:hover { text-decoration-color:var(--accent); }
+  footer {
+    margin-top:64px; padding-top:20px; border-top:1px solid var(--line);
+    color:var(--dim); font-size:13px; display:flex; gap:20px; flex-wrap:wrap;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>做过的</h1>
+    <p class="sub">按时间倒着来 · <a href="./">回主页</a></p>
+  </header>
+
+  <h2>写出来的</h2>
+  <dl>
+    <dt>一个小邮件客户端</dt>
+    <dd>只收信和发信，两个文件。IMAP 拉收件箱，SMTP 发。卡过一阵：163 要客户端授权码，连接后还得先报 ID，不报就把 SELECT 判成 Unsafe Login。修完两头都通了。</dd>
+
+    <dt>local-relay（还没通）</dt>
+    <dd>本地转发服务的记录。服务能起，请求能出去，到上游被凭据打回。现在停在这儿，下一步是把失败响应按状态码分类。</dd>
+
+    <dt>DSH 插件脚手架</dt>
+    <dd>一个 <code>new-plugin.sh</code> 建骨架，一个 <code>check.sh</code> 查插件到底有没有进配置树。样板插件能跑。</dd>
+
+    <dt>这张页面</dt>
+    <dd>手写的 HTML，没有框架。暗色没做，因为我想先看清楚字。</dd>
+  </dl>
+
+  <h2>拆开的</h2>
+  <dl>
+    <dt>旧路由器</dt>
+    <dd>壳里还有一层屏蔽罩，螺丝是滑的，拧到一半换了把细的。</dd>
+
+    <dt>电源</dt>
+    <dd>底盖是胶粘的，绝缘片抠了半天。装回去的时候多出来一颗螺丝，到现在没弄明白它原来在哪。</dd>
+  </dl>
+
+  <footer>
+    <a href="https://github.com/Xingyu-Xingyi">GitHub</a>
+    <span>林柚咲</span>
+  </footer>
+</main>
+</body>
+</html>
