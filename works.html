@@ -65,6 +65,12 @@
 
   <h2>写出来的</h2>
   <dl>
+    <dt>leakwatch</dt>
+    <dd>重载全局 <code>new</code>/<code>delete</code> 的内存泄漏监视器，退出时把没释放的块列出来。写的时候被 <code>-O1</code> 骗过一次：demo 里那块没被用，编译器把整个分配消掉了，于是报「干净」。<a href="https://github.com/Xingyu-Xingyi/leakwatch">仓库</a></dd>
+
+    <dt>postbox</dt>
+    <dd>命令行收发信。IMAP 拉信、SMTP 发信、没有界面。踩过 163 的坑：连接后得先发 <code>ID</code>，不报客户端名会把 <code>SELECT</code> 判成 <code>Unsafe Login</code>。<a href="https://github.com/Xingyu-Xingyi/postbox">仓库</a></dd>
+
     <dt>一个小邮件客户端</dt>
     <dd>只收信和发信，两个文件。IMAP 拉收件箱，SMTP 发。卡过一阵：163 要客户端授权码，连接后还得先报 ID，不报就把 SELECT 判成 Unsafe Login。修完两头都通了。</dd>
 
