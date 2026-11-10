@@ -5,38 +5,100 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>笔记 · 斜率优化</title>
 <style>
-  :root { --ink:#16171b; --dim:#7c818a; --line:#e7e7ea; --bg:#fbfbfa; --accent:#3b5bdb; }
+  :root {
+    --ink:#16171b; --dim:#5f6570; --line:#e3e4e8; --bg:#fbfbfa; --card:#fff; --accent:#2f4ec9;
+    --s1:8px; --s2:16px; --s3:24px; --s4:40px;
+  }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink);
-    font:15px/1.85 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif; }
-  main { max-width:760px; margin:0 auto; padding:64px 24px 90px; }
-  h1 { font-size:24px; font-weight:600; margin:0 0 6px; }
-  .sub { color:var(--dim); font-size:13px; margin:0 0 30px; }
-  .sub a { color:var(--dim); }
-  p { margin:0 0 16px; }
-  .lede { font-size:16px; }
-  .card { border:1px solid var(--line); border-radius:12px; padding:16px; margin:22px 0 12px; background:#fff; }
-  canvas { width:100%; height:auto; display:block; cursor:crosshair; }
-  .readout { font-family:ui-monospace, Menlo, Consolas, monospace; font-size:13px; color:var(--dim); margin-top:10px; }
+  html { -webkit-text-size-adjust:100%; }
+  body {
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.75 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
+  }
+  main { max-width:720px; margin:0 auto; padding:var(--s4) var(--s3) 96px; }
+
+  .top { display:flex; flex-wrap:wrap; gap:var(--s2); align-items:baseline; justify-content:space-between; }
+  h1 { font-size:26px; line-height:1.3; font-weight:600; margin:0 0 var(--s1); }
+  .sub { color:var(--dim); font-size:14px; margin:0; }
+  .sub a { color:var(--dim); text-underline-offset:3px; }
+  .sub a:hover { color:var(--ink); }
+
+  p { margin:0 0 var(--s2); }
+  .lede { font-size:17px; line-height:1.8; }
+
+  code {
+    font-family:ui-monospace, Menlo, Consolas, monospace; font-size:14.5px;
+    background:#f0f0ee; padding:1px 5px; border-radius:4px;
+  }
+
+  .card {
+    border:1px solid var(--line); border-radius:12px; background:var(--card);
+    padding:var(--s2); margin:var(--s3) 0 var(--s2);
+  }
+  canvas { width:100%; height:auto; display:block; border-radius:8px; }
+  canvas:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+
+  .controls { display:flex; flex-wrap:wrap; gap:var(--s2); align-items:center; margin-top:var(--s2); }
+  .controls label { font-size:14px; color:var(--dim); }
+  input[type=range] {
+    flex:1 1 220px; min-height:44px; accent-color:var(--accent); cursor:pointer;
+  }
+  input[type=range]:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+
+  .readout {
+    font-family:ui-monospace, Menlo, Consolas, monospace; font-size:14px; line-height:1.9;
+    color:var(--dim); margin-top:var(--s2);
+  }
   .readout b { color:var(--accent); font-weight:600; }
-  code { font-family:ui-monospace, Menlo, Consolas, monospace; font-size:13px; background:#f0f0ee; padding:1px 5px; border-radius:4px; }
-  footer { margin-top:50px; padding-top:18px; border-top:1px solid var(--line); color:var(--dim); font-size:13px; }
+
+  .legend { display:flex; flex-wrap:wrap; gap:var(--s1) var(--s2); margin:var(--s2) 0 0; padding:0; list-style:none; }
+  .legend li { display:flex; align-items:center; gap:7px; font-size:14px; color:var(--dim); }
+  .swatch { width:18px; height:3px; border-radius:2px; flex:0 0 18px; }
+  .swatch.gray { background:#b6bac2; }
+  .swatch.blue { background:var(--accent); height:4px; }
+  .swatch.dot { width:9px; height:9px; border-radius:50%; background:#d6336c; flex:0 0 9px; }
+
+  footer {
+    margin-top:var(--s4); padding-top:var(--s2); border-top:1px solid var(--line);
+    color:var(--dim); font-size:14px;
+  }
   footer a { color:var(--dim); }
+  footer a:hover { color:var(--ink); }
+  @media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
 </style>
 </head>
 <body>
 <main>
-  <h1>斜率优化 · 拖一下试试</h1>
-  <p class="sub">鼠标在图上左右移动 = 换一个 j。<a href="./">回主页</a> · <a href="./code.html">代码片段</a></p>
-
-  <p class="lede">式子拆开：<code>d[j] = costs[j-1] + min(d[i] + (j-i)²)</code>。平方展开以后，每个已经算过的 i 都留下一条斜率 <code>-2i</code>、截距 <code>d[i]+i²</code> 的直线，剩下的就是「每个 j 上哪条线最低」。</p>
-
-  <div class="card">
-    <canvas id="cv" width="720" height="420"></canvas>
-    <div class="readout" id="out">把鼠标移到图上</div>
+  <div class="top">
+    <div>
+      <h1>斜率优化，拖一下试试</h1>
+      <p class="sub"><a href="./">回主页</a> · <a href="./code.html">代码片段</a></p>
+    </div>
   </div>
 
-  <p>灰色是全部候选线，蓝的是它们的最低包络，红点是当前 j 取到的那条线。因为斜率一路变陡、j 一路往右，能当答案的线只会排成一个凸壳，所以队列里只留这几条就够。</p>
+  <p class="lede">式子拆开：<code>d[j] = costs[j-1] + min(d[i] + (j-i)²)</code>。平方展开以后，每个已经算过的 i 都留下一条斜率 <code>-2i</code>、截距 <code>d[i]+i²</code> 的直线，剩下的事就是每个 j 上找哪条线最低。</p>
+
+  <div class="card">
+    <canvas id="cv" width="1440" height="840"
+            tabindex="0" role="img"
+            aria-label="一束候选直线与它们的最低包络。可以用左右方向键移动当前 j，读出区会给出最优来自哪个 i。"></canvas>
+
+    <ul class="legend">
+      <li><span class="swatch gray"></span>全部候选线</li>
+      <li><span class="swatch blue"></span>最低包络</li>
+      <li><span class="swatch dot"></span>当前 j 取到的线</li>
+    </ul>
+
+    <div class="controls">
+      <label for="j">当前 j</label>
+      <input id="j" type="range" min="0" max="12" step="0.05" value="4"
+             aria-describedby="out">
+    </div>
+
+    <p class="readout" id="out" aria-live="polite">把鼠标移到图上，或者用方向键 / 滑块换 j</p>
+  </div>
+
+  <p>因为斜率一路变陡、j 一路往右，能当答案的线只会排成一个凸壳，所以队列里只留这几条就够，查一次插一次，O(n)。</p>
 
   <footer><a href="./">← 回主页</a></footer>
 </main>
@@ -46,6 +108,7 @@
   const cv = document.getElementById('cv');
   const ctx = cv.getContext('2d');
   const out = document.getElementById('out');
+  const slider = document.getElementById('j');
 
   // 造一组像真的 d[]：只能跨 1/2/3 级，落地付 costs
   const costs = [7, 3, 9, 4, 6, 2, 8, 5, 3, 9, 4];
@@ -59,7 +122,7 @@
   const lines = [];
   for (let i = 0; i <= n; ++i) lines.push({ i, k: -2 * i, b: d[i] + i * i });
 
-  const padL = 44, padR = 18, padT = 18, padB = 34;
+  const padL = 44, padR = 20, padT = 22, padB = 40;
   const xMax = n + 1;
   let yMin = Infinity, yMax = -Infinity;
   for (const L of lines) {
@@ -68,7 +131,6 @@
       yMin = Math.min(yMin, y); yMax = Math.max(yMax, y);
     }
   }
-  // 上端裁一点，不然陡的线把图压扁
   yMin = Math.min(yMin, d[n]);
   yMax = d[n] + 40;
 
@@ -80,26 +142,24 @@
   function draw(j) {
     ctx.clearRect(0, 0, cv.width, cv.height);
 
-    ctx.strokeStyle = '#efeff2';
+    ctx.strokeStyle = '#eef0f3';
     ctx.lineWidth = 1;
     for (let g = 0; g <= 4; ++g) {
       const y = padT + g * (cv.height - padT - padB) / 4;
       ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(cv.width - padR, y); ctx.stroke();
     }
 
-    // 全部候选线
     ctx.lineWidth = 1;
     for (const L of lines) {
-      ctx.strokeStyle = 'rgba(124,129,138,.35)';
+      ctx.strokeStyle = 'rgba(120,126,136,.30)';
       ctx.beginPath();
       ctx.moveTo(X(0), Y(L.k * 0 + L.b));
       ctx.lineTo(X(xMax), Y(L.k * xMax + L.b));
       ctx.stroke();
     }
 
-    // 最低包络
-    ctx.strokeStyle = '#3b5bdb';
-    ctx.lineWidth = 2.2;
+    ctx.strokeStyle = '#2f4ec9';
+    ctx.lineWidth = 3;
     ctx.beginPath();
     let started = false;
     for (let x = 0; x <= xMax; x += 0.02) {
@@ -110,39 +170,53 @@
     }
     ctx.stroke();
 
-    // 当前 j
     let best = lines[0];
     for (const L of lines) if (L.k * j + L.b < best.k * j + best.b) best = L;
     const vy = best.k * j + best.b;
 
-    ctx.strokeStyle = '#e03131';
-    ctx.setLineDash([4, 4]);
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#d6336c';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(X(j), padT); ctx.lineTo(X(j), cv.height - padB); ctx.stroke();
     ctx.setLineDash([]);
 
-    ctx.fillStyle = '#e03131';
-    ctx.beginPath(); ctx.arc(X(j), Y(vy), 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#d6336c';
+    ctx.beginPath(); ctx.arc(X(j), Y(vy), 7, 0, Math.PI * 2); ctx.fill();
 
     ctx.fillStyle = '#16171b';
-    ctx.font = '13px ui-monospace, Menlo, monospace';
-    ctx.fillText('j = ' + j.toFixed(2), X(j) + 8, padT + 14);
+    ctx.font = '600 20px ui-monospace, Menlo, monospace';
+    ctx.fillText('j = ' + j.toFixed(2), X(j) + 12, padT + 18);
 
     out.innerHTML = '当前 j = <b>' + j.toFixed(2) + '</b>　最优来自 <b>i = ' + best.i +
       '</b>　值 = <b>' + vy.toFixed(1) + '</b>　（跨 ' + Math.round(j - best.i) + ' 级）';
   }
 
-  function pick(ev) {
-    const r = cv.getBoundingClientRect();
-    const x = (ev.clientX - r.left) * (cv.width / r.width);
-    const j = (x - padL) / (cv.width - padL - padR) * xMax;
+  function setJ(j) {
     curJ = Math.max(0, Math.min(xMax, j));
+    slider.value = curJ;
     draw(curJ);
   }
 
-  cv.addEventListener('mousemove', pick);
-  cv.addEventListener('touchmove', e => { if (e.touches[0]) pick(e.touches[0]); e.preventDefault(); }, { passive: false });
-  draw(curJ);
+  function fromPointer(ev) {
+    const r = cv.getBoundingClientRect();
+    const x = (ev.clientX - r.left) * (cv.width / r.width);
+    setJ((x - padL) / (cv.width - padL - padR) * xMax);
+  }
+
+  cv.addEventListener('pointermove', fromPointer);
+  cv.addEventListener('pointerdown', fromPointer);
+  cv.addEventListener('keydown', e => {
+    const step = e.shiftKey ? 0.5 : 0.1;
+    if (e.key === 'ArrowRight') { setJ(curJ + step); e.preventDefault(); }
+    if (e.key === 'ArrowLeft') { setJ(curJ - step); e.preventDefault(); }
+    if (e.key === 'Home') { setJ(0); e.preventDefault(); }
+    if (e.key === 'End') { setJ(xMax); e.preventDefault(); }
+  });
+  slider.addEventListener('input', () => setJ(parseFloat(slider.value)));
+
+  slider.max = xMax;
+  slider.step = 0.05;
+  setJ(curJ);
 })();
 </script>
 </body>
