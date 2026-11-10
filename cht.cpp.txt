@@ -1,0 +1,68 @@
+// 用途：验证 climbStairs + 跳跃代价 (j-i)^2 的 O(n) 斜率优化，跟 O(n^2) 暴力对拍
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+// 暴力：d[j] = costs[j-1] + min_i (d[i] + (j-i)^2)
+ll brute(const vector<ll>& costs) {
+    int n = costs.size() - 1;
+    vector<ll> d(n + 1, LLONG_MAX / 4);
+    d[0] = 0;
+    for (int j = 1; j <= n; ++j)
+        for (int i = 0; i < j; ++i)
+            d[j] = min(d[j], d[i] + (ll)(j - i) * (j - i) + costs[j - 1]);
+    return d[n];
+}
+
+// 斜率优化：每个 i 是一条 k=-2i, b=d[i]+i^2 的线，单调队列维护下凸壳
+ll fast(const vector<ll>& costs) {
+    int n = costs.size() - 1;
+    vector<ll> d(n + 1, 0);
+    vector<pair<ll, ll>> hull;  // (k, b)
+    vector<int> head;           // 每条线对应的下标，用来判交点
+
+    auto bad = [](const pair<ll, ll>& a, const pair<ll, ll>& b, const pair<ll, ll>& c) {
+        // b 在两线交点之间就没用了
+        return (b.second - a.second) * (b.first - c.first) >= (c.second - b.second) * (a.first - b.first);
+    };
+    auto val = [](const pair<ll, ll>& l, ll x) { return l.first * x + l.second; };
+
+    // i = 0 的线
+    hull.push_back({0, 0});
+    head.push_back(0);
+    int ptr = 0;
+
+    for (int j = 1; j <= n; ++j) {
+        while (ptr + 1 < (int)hull.size() && val(hull[ptr + 1], j) <= val(hull[ptr], j)) ++ptr;
+        d[j] = val(hull[ptr], j) + (ll)j * j + costs[j - 1];
+
+        pair<ll, ll> line{-2LL * j, d[j] + (ll)j * j};
+        while (hull.size() >= 2 && bad(hull[hull.size() - 2], hull.back(), line)) hull.pop_back();
+        hull.push_back(line);
+        if (ptr >= (int)hull.size()) ptr = (int)hull.size() - 1;
+    }
+    return d[n];
+}
+
+int main() {
+    mt19937 rng(42);
+    for (int t = 0; t < 300; ++t) {
+        int n = 1 + rng() % 60;
+        vector<ll> costs(n);
+        for (auto& c : costs) c = rng() % 50;
+        ll a = brute(costs), b = fast(costs);
+        if (a != b) {
+            printf("对拍挂了 n=%d brute=%lld fast=%lld\n", n, a, b);
+            return 1;
+        }
+    }
+    puts("三百组随机全部一致");
+
+    // 量级检查
+    vector<ll> big(100001, 1000);
+    auto t0 = chrono::steady_clock::now();
+    ll r = fast(big);
+    auto ms = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - t0).count();
+    printf("n=100000 跑完 %lld，用时 %lld ms\n", r, (long long)ms);
+    return 0;
+}
