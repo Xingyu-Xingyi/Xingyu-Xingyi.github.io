@@ -45,7 +45,7 @@
     <a href="#" data-t="stairs">上台阶 · 滚三个变量</a>
     <a href="#" data-t="leak">内存泄漏监视器</a>
     <a href="#" data-t="imapid">163 的 IMAP 要先报 ID</a>
-    <a href="#" data-t="envelope">斜率优化 · 一张图</a>
+    <a href="./notes.html">讲解和交互的图 →</a>
     <div class="back"><a href="./">← 回主页</a></div>
   </aside>
 
@@ -133,13 +133,6 @@ conn._simple_command(
 )
 conn._untagged_response("OK", [None], "ID")
 conn.select("INBOX", readonly=True)</code></pre>
-    </section>
-
-    <section class="item" id="envelope">
-      <h3>斜率优化 · 一张图</h3>
-      <p class="note">d[j] = costs[j-1] + min(d[i] + (j-i)²) 拆开之后，每个 i 是一条斜率 -2i 的直线，每个 j 问的是这些线里最低的那条。灰色是全部候选，蓝色那条是它们的最低包络，红点是每个 j 实际取到的位置。</p>
-      <p style="margin:0 0 14px"><img src="./cht-envelope.png" alt="一束直线与它们的最低包络" style="max-width:100%;border:1px solid var(--line);border-radius:10px"></p>
-      <p class="note">斜率随 i 单调变陡、查询点 j 单调往右，队列里只留有用的那几条，查一次插一次，O(n)。</p>
     </section>
   </main>
 </div>
