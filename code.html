@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>代码片段</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css">
+<style>
+  :root { --ink:#16171b; --dim:#7c818a; --line:#e7e7ea; --bg:#fbfbfa; --accent:#3b5bdb; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+    font:15px/1.85 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif; }
+  .wrap { display:flex; min-height:100vh; }
+  aside { width:230px; flex:0 0 230px; border-right:1px solid var(--line);
+    padding:26px 18px; position:sticky; top:0; height:100vh; overflow:auto; }
+  aside h2 { font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--dim); margin:0 0 14px; font-weight:600; }
+  aside a { display:block; padding:7px 10px; border-radius:8px; color:var(--ink); text-decoration:none; font-size:14px; }
+  aside a:hover { background:#f0f1f5; }
+  aside a.on { background:#eef1ff; color:var(--accent); font-weight:600; }
+  aside .back { margin-top:20px; border-top:1px solid var(--line); padding-top:14px; font-size:13px; color:var(--dim); }
+  aside .back a { color:var(--dim); display:inline; padding:0; }
+  main { flex:1; min-width:0; padding:34px 40px 80px; max-width:900px; }
+  h1 { font-size:22px; font-weight:600; margin:0 0 6px; }
+  .sub { color:var(--dim); font-size:13px; margin:0 0 26px; }
+  .item { display:none; }
+  .item.on { display:block; }
+  .item h3 { font-size:16px; font-weight:600; margin:0 0 6px; }
+  .item p.note { color:var(--dim); font-size:13.5px; margin:0 0 16px; }
+  pre { margin:0; overflow:auto; border:1px solid var(--line); border-radius:10px; }
+  pre code { display:block; padding:16px 18px; font-size:13px; line-height:1.65;
+    font-family:ui-monospace, Menlo, Consolas, monospace; }
+  @media (max-width:760px) {
+    .wrap { display:block; }
+    aside { width:auto; height:auto; position:static; border-right:0; border-bottom:1px solid var(--line); }
+    main { padding:24px 18px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <h2>片段</h2>
+    <a href="#" data-t="hash" class="on">判断子串 · 字符串哈希</a>
+    <a href="#" data-t="zfunc">判断子串 · Z 算法</a>
+    <a href="#" data-t="stairs">上台阶 · 滚三个变量</a>
+    <a href="#" data-t="leak">内存泄漏监视器</a>
+    <a href="#" data-t="imapid">163 的 IMAP 要先报 ID</a>
+    <div class="back"><a href="./">← 回主页</a></div>
+  </aside>
+
+  <main>
+    <h1>代码片段</h1>
+    <p class="sub">写过的、以后还要抄回来的。左边换着看。</p>
+
+    <section class="item on" id="hash">
+      <h3>判断 a 是不是 b 的子串 · 字符串哈希</h3>
+      <p class="note">先算 a 的哈希，再在 b 上滑窗口。命中之后还要逐字比一遍，不然撞了会误判。</p>
+<pre><code class="language-cpp">bool sub(const string&amp; a, const string&amp; b) {
+    if (a.size() &gt; b.size()) return false;
+    unsigned long long B = 131, t = 0, c = 0, pw = 1;
+    for (char x : a) t = t * B + x;
+    for (size_t i = 0; i &lt; a.size(); ++i) {
+        c = c * B + b[i];
+        if (i) pw *= B;
+    }
+    if (c == t &amp;&amp; b.compare(0, a.size(), a) == 0) return true;
+    for (size_t i = a.size(); i &lt; b.size(); ++i) {
+        c -= (unsigned long long)b[i - a.size()] * pw;
+        c = c * B + b[i];
+        if (c == t &amp;&amp; b.compare(i - a.size() + 1, a.size(), a) == 0) return true;
+    }
+    return false;
+}</code></pre>
+    </section>
+
+    <section class="item" id="zfunc">
+      <h3>判断子串 · Z 算法</h3>
+      <p class="note">拼成 a + 分隔符 + b，谁的最长公共前缀等于 a 的长度就是出现位置。天生不会误判。</p>
+<pre><code class="language-cpp">bool sub(const string&amp; a, const string&amp; b) {
+    if (a.size() &gt; b.size()) return false;
+    string s = a + "\x01" + b;
+    int n = s.size();
+    vector&lt;int&gt; z(n);
+    for (int i = 1, l = 0, r = 0; i &lt; n; ++i) {
+        if (i &lt;= r) z[i] = min(r - i + 1, z[i - l]);
+        while (i + z[i] &lt; n &amp;&amp; s[z[i]] == s[i + z[i]]) ++z[i];
+        if (i + z[i] - 1 &gt; r) { l = i; r = i + z[i] - 1; }
+    }
+    for (int i = a.size() + 1; i &lt; n; ++i)
+        if (z[i] &gt;= (int)a.size()) return true;
+    return false;
+}</code></pre>
+    </section>
+
+    <section class="item" id="stairs">
+      <h3>上台阶 · 一次跨一、二、三级</h3>
+      <p class="note">跨 k 级的代价是 k 的平方，落地再付 costs 那一级。三个变量滚着走就是 O(n)，别写回扫。</p>
+<pre><code class="language-cpp">long long climb(vector&lt;int&gt;&amp; costs) {
+    long long f0 = 0, f1 = 0, f2 = 0;   // d[i-3], d[i-2], d[i-1]
+    for (int c : costs) {
+        long long cur = min(min(f0 + 9, f1 + 4), f2 + 1) + c;
+        f0 = f1; f1 = f2; f2 = cur;
+    }
+    return f2;
+}</code></pre>
+    </section>
+
+    <section class="item" id="leak">
+      <h3>内存泄漏监视器</h3>
+      <p class="note">重载全局 new / delete，表里划不掉的留在退出时打印。表本身不能用 new 建，不然自己调自己。</p>
+<pre><code class="language-cpp">void* operator new(std::size_t n) {
+    void* p = std::malloc(n ? n : 1);
+    if (!p) throw std::bad_alloc();
+    record(p, n);          // 塞进静态表
+    return p;
+}
+void operator delete(void* p) noexcept {
+    forget(p);             // 从表里划掉，找不到就告警
+    std::free(p);
+}
+// 退出时 atexit 里把表里剩的 print 出来</code></pre>
+    </section>
+
+    <section class="item" id="imapid">
+      <h3>163 的 IMAP 要先报 ID</h3>
+      <p class="note">不报客户端名，SELECT 会被判成 Unsafe Login。报完再选信箱。</p>
+<pre><code class="language-python">imaplib.Commands["ID"] = ("NONAUTH", "AUTH", "SELECTED")
+conn = imaplib.IMAP4_SSL("imap.163.com", 993)
+conn.login(user, password)
+conn._simple_command(
+    "ID", '("name" "postbox" "version" "0.1" "vendor" "xingyi")'
+)
+conn._untagged_response("OK", [None], "ID")
+conn.select("INBOX", readonly=True)</code></pre>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script>
+  hljs.highlightAll();
+  const links = document.querySelectorAll('aside a[data-t]');
+  links.forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    links.forEach(x => x.classList.remove('on'));
+    a.classList.add('on');
+    document.querySelectorAll('.item').forEach(s => s.classList.remove('on'));
+    document.getElementById(a.dataset.t).classList.add('on');
+  }));
+</script>
+</body>
+</html>
