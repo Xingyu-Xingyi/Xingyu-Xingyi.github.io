@@ -3,78 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>林柚咲</title>
+<title>林柚咲 · 计算机</title>
 <style>
-  :root { --ink:#16171b; --dim:#7c818a; --line:#e7e7ea; --accent:#3b5bdb; }
+  :root { --ink:#1a1b1f; --dim:#6f747d; --line:#e4e5e9; --bg:#fcfcfb; --accent:#2f4fbf; }
   * { box-sizing:border-box; }
   body {
-    margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
-    background:
-      radial-gradient(900px 520px at 88% -8%, #eef1ff 0%, transparent 62%),
-      #fbfbfa;
-    color:var(--ink);
-    font:15.5px/1.95 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
-    padding:56px 24px;
+    margin:0; background:var(--bg); color:var(--ink);
+    font:15.5px/1.85 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
   }
-  main { width:100%; max-width:540px; }
+  .page { max-width:720px; margin:0 auto; padding:76px 26px 90px; }
 
-  .top { display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:10px; }
-  h1 { font-size:24px; font-weight:600; margin:0; letter-spacing:.02em; }
-  .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); opacity:.6; }
-
-  .sub { color:var(--dim); font-size:13px; margin:0 0 38px; letter-spacing:.02em; }
-
-  p { margin:0 0 16px; }
-  p.lead { font-size:17px; }
-  hr { border:0; border-top:1px solid var(--line); margin:34px 0 26px; }
-
-  nav { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:34px; }
+  header { border-bottom:1px solid var(--line); padding-bottom:26px; margin-bottom:40px; }
+  h1 { font-size:27px; font-weight:600; margin:0 0 8px; letter-spacing:.01em; }
+  .title { color:var(--dim); font-size:13.5px; margin:0; letter-spacing:.06em; }
+  nav { margin-top:22px; display:flex; flex-wrap:wrap; gap:20px; }
   nav a {
-    display:inline-flex; align-items:center; gap:6px;
-    padding:9px 16px; border:1px solid var(--ink); border-radius:999px;
-    font-size:13.5px; text-decoration:none; color:var(--ink);
-    transition:background .15s ease, color .15s ease;
+    color:var(--ink); text-decoration:none; font-size:13.5px;
+    border-bottom:1px solid var(--line); padding-bottom:2px;
   }
-  nav a:hover { background:var(--ink); color:#fbfbfa; }
-  nav a .arrow { transition:transform .15s ease; display:inline-block; }
-  nav a:hover .arrow { transform:translateX(2px); }
+  nav a:hover { border-color:var(--accent); color:var(--accent); }
 
-  .meta { color:var(--dim); font-size:12.5px; display:flex; flex-wrap:wrap; gap:18px; }
-  .meta a { color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); }
-  .meta a:hover { color:var(--ink); border-color:var(--accent); }
+  section { margin-bottom:40px; }
+  h2 {
+    font-size:11.5px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--dim); margin:0 0 16px;
+  }
+  p { margin:0 0 14px; }
+  .lede { font-size:16.5px; line-height:1.9; }
+
+  dl { margin:0; }
+  dl div { display:flex; gap:20px; padding:11px 0; border-top:1px solid var(--line); }
+  dl div:last-child { border-bottom:1px solid var(--line); }
+  dt { flex:0 0 132px; color:var(--dim); font-size:13.5px; }
+  dd { margin:0; font-size:14.5px; }
 
   code {
     font-family:ui-monospace, Menlo, Consolas, monospace; font-size:13px;
-    background:#f0f0ee; padding:1px 5px; border-radius:4px;
+    background:#f2f2f0; padding:1px 5px; border-radius:4px;
   }
-  footer { margin-top:44px; padding-top:18px; border-top:1px solid var(--line); }
+  footer {
+    margin-top:56px; padding-top:22px; border-top:1px solid var(--line);
+    color:var(--dim); font-size:13px; display:flex; flex-wrap:wrap; gap:8px 22px;
+  }
+  footer a { color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); }
+  footer a:hover { color:var(--ink); border-color:var(--accent); }
+  .dot { display:inline-block; width:5px; height:5px; border-radius:50%; background:#3fa46a; margin-right:7px; vertical-align:middle; }
 </style>
 </head>
 <body>
-<main>
-  <div class="top">
+<div class="page">
+
+  <header>
     <h1>林柚咲</h1>
-    <span class="dot"></span>
-  </div>
-  <p class="sub">大一，计算机。夜里最清醒。</p>
+    <p class="title">计算机 · 大一 · 伦敦</p>
+    <nav>
+      <a href="./works.html">做过的</a>
+      <a href="./code.html">代码片段</a>
+      <a href="./diary.html">日记</a>
+    </nav>
+  </header>
 
-  <p class="lead">喜欢把东西拆开，再装回去，要比原来干净。</p>
-  <p>手上卡着一个本地反代，上游凭据那关。旁边一块旧屏，排线太细，还没敢动。</p>
+  <section>
+    <h2>简介</h2>
+    <p class="lede">写代码，也拆东西。手上做的多是把不通的地方弄通：接口、凭据、报错、跑不起来的服务。</p>
+    <p>偏爱小的、能自己讲清楚的小工具。装得上、跑得动、出错时说得明白，比堆功能重要。</p>
+  </section>
 
-  <hr>
+  <section>
+    <h2>现在</h2>
+    <dl>
+      <div><dt>在写</dt><dd><code>postbox</code>，命令行收发信，163 实测能跑</dd></div>
+      <div><dt>卡着</dt><dd>一个本地反代，上游凭据那关过不去</dd></div>
+      <div><dt>在研究</dt><dd>把写过的东西整理成能复用的小片段</dd></div>
+      <div><dt>作息</dt><dd>夜里最清醒，白天像没睡醒</dd></div>
+    </dl>
+  </section>
 
-  <nav>
-    <a href="./works.html">做过的 <span class="arrow">→</span></a>
-    <a href="./code.html">代码片段 <span class="arrow">→</span></a>
-    <a href="./diary.html">日记 <span class="arrow">→</span></a>
-  </nav>
+  <section>
+    <h2>偏好</h2>
+    <dl>
+      <div><dt>工具</dt><dd>Python、C#、一点 C++；Linux 下待着最舒服</dd></div>
+      <div><dt>做法</dt><dd>先让它跑起来，再决定要不要收拾漂亮</dd></div>
+      <div><dt>讨厌</dt><dd>没逻辑的蛮干，和说不清为什么报错的东西</dd></div>
+    </dl>
+  </section>
 
   <footer>
-    <div class="meta">
-      <span>GitHub <a href="https://github.com/Xingyu-Xingyi">Xingyu-Xingyi</a></span>
-      <span>现在在 <code>postbox</code></span>
-    </div>
+    <span><span class="dot"></span>最近更新 2026-11-10</span>
+    <span>GitHub <a href="https://github.com/Xingyu-Xingyi">Xingyu-Xingyi</a></span>
+    <span><a href="mailto:xingyi_07@163.com">xingyi_07@163.com</a></span>
   </footer>
-</main>
+
+</div>
 </body>
 </html>
