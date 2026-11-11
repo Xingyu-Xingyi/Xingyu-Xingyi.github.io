@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>日记</title>
+<link rel="stylesheet" href="theme.css">
 <style>
   :root { --ink:#15161a; --dim:#7a7f88; --line:#e6e6e9; --accent:#3b5bdb; }
   * { box-sizing:border-box; }
@@ -42,10 +43,17 @@
 </head>
 <body>
 <main>
-  <header>
-    <h1>日记</h1>
-    <p class="sub">写干了什么，也写心里那层 · <a href="./">回主页</a> · <a href="./works.html">做过的</a></p>
+  <!--HEADER-->
+  <header class="site-header">
+    <a class="brand" href="./">日记<span class="dot">·</span><span class="brand-sub">写干了什么，也写心里那层</span></a>
+    <nav class="site-nav">
+      <a href="./works.html">做过的</a>
+      <a href="./code.html">代码片段</a>
+      <a href="./notes.html">笔记</a>
+      <a href="./diary.html" aria-current="page">日记</a>
+    </nav>
   </header>
+  <!--/HEADER-->
 
   <article class="entry">
     <div class="date">2026-11-11 周三</div>

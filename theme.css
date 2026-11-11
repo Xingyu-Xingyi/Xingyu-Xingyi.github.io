@@ -1,0 +1,113 @@
+/* 用途：全站共用的一套东西——颜色和间距的变量、页头、按钮。改这里，四个页面一起变 */
+
+:root {
+  --ink: #15161a;
+  --dim: #7a7f88;
+  --line: #e6e6e9;
+  --bg: #fbfbfa;
+  --accent: #3b5bdb;
+
+  --s1: 8px;
+  --s2: 16px;
+  --s3: 24px;
+  --s4: 40px;
+  --s5: 64px;
+
+  --radius: 10px;
+  --pill: 999px;
+}
+
+/* 页头：品牌 + 导航，四个页面一份 */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s2);
+  margin: 0 0 var(--s4);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .brand {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.site-header .brand .dot {
+  color: var(--dim);
+  margin: 0 4px;
+}
+.site-header .brand-sub {
+  color: var(--dim);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* 导航：一排胶囊，悬停反色 */
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.site-nav a {
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--pill);
+  font-size: 13.5px;
+  color: var(--dim);
+  text-decoration: none;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.site-nav a:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.site-nav a[aria-current="page"] {
+  color: var(--bg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* 按钮：正文里跳转用的那种，跟导航分开 */
+.btn {
+  display: inline-block;
+  padding: 10px 18px;
+  border: 1px solid var(--ink);
+  border-radius: var(--pill);
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.btn:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+.btn-ghost {
+  border-color: var(--line);
+  color: var(--dim);
+}
+.btn-ghost:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: transparent;
+}
+
+/* 页脚 */
+.site-footer {
+  margin-top: var(--s5);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--line);
+  color: var(--dim);
+  font-size: 13px;
+}
+.site-footer a { color: var(--dim); }
+
+@media (max-width: 560px) {
+  .site-header { gap: var(--s1); }
+  .site-nav a { padding: 4px 10px; font-size: 13px; }
+}
