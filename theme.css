@@ -111,3 +111,25 @@
   .site-header { gap: var(--s1); }
   .site-nav a { padding: 4px 10px; font-size: 13px; }
 }
+
+/* 正文：长段落别挤成一坨，行距和段距松一点 */
+body {
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+p { margin: 0 0 var(--s2); }
+p:last-child { margin-bottom: 0; }
+h1, h2, h3 { line-height: 1.35; }
+a { text-underline-offset: 3px; }
+
+/* 暗色：跟着系统走，不单独做开关 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8e9ee;
+    --dim: #99a0ab;
+    --line: #2b2d34;
+    --bg: #14151a;
+    --accent: #8ba1ff;
+  }
+}
