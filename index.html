@@ -6,9 +6,9 @@
 <title>林柚咲 · 计算机</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  :root { --ink:#1a1b1f; --dim:#6f747d; --line:#e4e5e9; --bg:#fcfcfb; --accent:#2f4fbf; }
+  :root { --glow:#eef1ff; --chip:#f1f1f3; --ink:#1a1b1f; --dim:#6f747d; --line:#e4e5e9; --bg:#fcfcfb; --accent:#2f4fbf; }
   /* 暗色：跟系统走 */
-  @media (prefers-color-scheme: dark) { :root { --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --bg:#14151a; --accent:#8ba1ff } }
+  @media (prefers-color-scheme: dark) { :root { --glow:#1b202b; --chip:#23262e; --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --bg:#14151a; --accent:#8ba1ff } }
   * { box-sizing:border-box; }
   body {
     margin:0; background:var(--bg); color:var(--ink);
@@ -42,7 +42,7 @@
 
   code {
     font-family:ui-monospace, Menlo, Consolas, monospace; font-size:13px;
-    background:#f2f2f0; padding:1px 5px; border-radius:4px;
+    background:var(--chip); padding:1px 5px; border-radius:4px;
   }
   footer {
     margin-top:56px; padding-top:22px; border-top:1px solid var(--line);

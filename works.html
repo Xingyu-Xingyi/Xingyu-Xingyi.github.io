@@ -7,19 +7,21 @@
 <link rel="stylesheet" href="theme.css">
 <style>
   :root {
+    --glow:#eef1ff;
+    --chip:#f1f1f3;
     --ink:#15161a;
     --dim:#7a7f88;
     --line:#e6e6e9;
     --accent:#3b5bdb;
   }
   /* 暗色：跟系统走 */
-  @media (prefers-color-scheme: dark) { :root { --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --accent:#8ba1ff } }
+  @media (prefers-color-scheme: dark) { :root { --glow:#1b202b; --chip:#23262e; --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --accent:#8ba1ff } }
   * { box-sizing:border-box; }
   body {
     margin:0;
     background:
-      radial-gradient(1200px 600px at 85% -10%, #eef1ff 0%, transparent 60%),
-      #fbfbfa;
+      radial-gradient(1200px 600px at 85% -10%, var(--glow) 0%, transparent 60%),
+      var(--bg);
     color:var(--ink);
     font:16px/1.85 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
     padding:72px 24px 96px;
@@ -46,10 +48,10 @@
     content:""; width:5px; height:5px; border-radius:50%;
     background:var(--accent); opacity:.55; flex:none; transform:translateY(-3px);
   }
-  dd { margin:0 0 4px 13px; color:#3d3f45; }
+  dd { margin:0 0 4px 13px; color:var(--ink); }
   code {
     font-family:ui-monospace, Menlo, Consolas, monospace; font-size:13px;
-    background:#f1f1f3; padding:1px 5px; border-radius:4px;
+    background:var(--chip); padding:1px 5px; border-radius:4px;
   }
   a { color:var(--ink); text-underline-offset:3px; text-decoration-color:var(--line); }
   a:hover { text-decoration-color:var(--accent); }

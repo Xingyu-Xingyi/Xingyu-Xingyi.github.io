@@ -6,13 +6,13 @@
 <title>日记</title>
 <link rel="stylesheet" href="theme.css">
 <style>
-  :root { --ink:#15161a; --dim:#7a7f88; --line:#e6e6e9; --accent:#3b5bdb; }
+  :root { --glow:#eef1ff; --chip:#f1f1f3; --ink:#15161a; --dim:#7a7f88; --line:#e6e6e9; --accent:#3b5bdb; }
   /* 暗色：跟系统走 */
-  @media (prefers-color-scheme: dark) { :root { --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --accent:#8ba1ff } }
+  @media (prefers-color-scheme: dark) { :root { --glow:#1b202b; --chip:#23262e; --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --accent:#8ba1ff } }
   * { box-sizing:border-box; }
   body {
     margin:0;
-    background:radial-gradient(1200px 600px at 85% -10%, #eef1ff 0%, transparent 60%), #fbfbfa;
+    background:radial-gradient(1200px 600px at 85% -10%, var(--glow) 0%, transparent 60%), var(--bg);
     color:var(--ink);
     font:16px/1.85 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
     padding:72px 24px 96px;
@@ -38,7 +38,7 @@
     border:1px solid var(--ink); border-radius:999px; font-size:14px;
     text-decoration:none; color:var(--ink);
   }
-  .btn:hover { background:var(--ink); color:#fbfbfa; }
+  .btn:hover { background:var(--ink); color:var(--bg); }
   footer { margin-top:56px; padding-top:20px; border-top:1px solid var(--line); color:var(--dim); font-size:13px; }
   footer a { color:var(--dim); }
 </style>
