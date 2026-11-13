@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="./vendor/hl-github.min.css">
 <style>
   :root { --ink:#16171b; --dim:#7c818a; --line:#e7e7ea; --bg:#fbfbfa; --accent:#3b5bdb; }
+  /* 暗色：跟系统走 */
+  @media (prefers-color-scheme: dark) { :root { --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --bg:#14151a; --accent:#8ba1ff } }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--ink);
     font:15px/1.85 -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif; }
