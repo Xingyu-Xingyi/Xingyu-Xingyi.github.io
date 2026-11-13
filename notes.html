@@ -7,11 +7,11 @@
 <link rel="stylesheet" href="theme.css">
 <style>
   :root {
-    --ink:#16171b; --dim:#5f6570; --line:#e3e4e8; --bg:#fbfbfa; --card:#fff; --accent:#2f4ec9;
+    --ink:#16171b; --dim:#5f6570; --line:#e3e4e8; --bg:#fbfbfa; --card:#fff; --chip:#f0f0ee; --accent:#2f4ec9;
     --s1:8px; --s2:16px; --s3:24px; --s4:40px;
   }
   /* 暗色：跟系统走 */
-  @media (prefers-color-scheme: dark) { :root { --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --bg:#14151a; --card:#1b1d23; --accent:#8ba1ff } }
+  @media (prefers-color-scheme: dark) { :root { --ink:#e8e9ee; --dim:#99a0ab; --line:#2b2d34; --bg:#14151a; --card:#1b1d23; --chip:#23262e; --accent:#8ba1ff } }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
   body {
@@ -31,7 +31,7 @@
 
   code {
     font-family:ui-monospace, Menlo, Consolas, monospace; font-size:14.5px;
-    background:#f0f0ee; padding:1px 5px; border-radius:4px;
+    background:var(--chip); padding:1px 5px; border-radius:4px;
   }
 
   .card {
@@ -154,10 +154,12 @@
 
   let curJ = 4;
 
+  const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
   function draw(j) {
     ctx.clearRect(0, 0, cv.width, cv.height);
 
-    ctx.strokeStyle = '#eef0f3';
+    ctx.strokeStyle = cssVar('--line');
     ctx.lineWidth = 1;
     for (let g = 0; g <= 4; ++g) {
       const y = padT + g * (cv.height - padT - padB) / 4;
@@ -173,7 +175,7 @@
       ctx.stroke();
     }
 
-    ctx.strokeStyle = '#2f4ec9';
+    ctx.strokeStyle = cssVar('--accent');
     ctx.lineWidth = 3;
     ctx.beginPath();
     let started = false;
@@ -198,7 +200,7 @@
     ctx.fillStyle = '#d6336c';
     ctx.beginPath(); ctx.arc(X(j), Y(vy), 7, 0, Math.PI * 2); ctx.fill();
 
-    ctx.fillStyle = '#16171b';
+    ctx.fillStyle = cssVar('--ink');
     ctx.font = '600 20px ui-monospace, Menlo, monospace';
     ctx.fillText('j = ' + j.toFixed(2), X(j) + 12, padT + 18);
 
@@ -232,6 +234,11 @@
   slider.max = xMax;
   slider.step = 0.05;
   setJ(curJ);
+
+  // 系统换主题要重画一次，不然图上还是旧配色
+  if (window.matchMedia) {
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => draw(curJ));
+  }
 })();
 </script>
 </body>
