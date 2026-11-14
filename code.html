@@ -39,6 +39,10 @@
   pre { margin:0; overflow:auto; border:1px solid var(--line); border-radius:10px; }
   pre code { display:block; padding:16px 18px; font-size:13px; line-height:1.65;
     font-family:ui-monospace, Menlo, Consolas, monospace; }
+  .copybar { display:flex; justify-content:flex-end; margin:0 0 6px; }
+  .copybar button { font:inherit; font-size:12px; line-height:1; color:var(--dim); background:transparent;
+    border:1px solid var(--line); border-radius:8px; padding:5px 10px; cursor:pointer; }
+  .copybar button:hover { color:var(--ink); border-color:var(--dim); }
   @media (max-width:760px) {
     .wrap { display:block; }
     aside { width:auto; height:auto; position:static; border-right:0; border-bottom:1px solid var(--line); }
@@ -170,6 +174,28 @@ conn.select("INBOX", readonly=True)</code></pre>
     document.querySelectorAll('.item').forEach(s => s.classList.remove('on'));
     document.getElementById(a.dataset.t).classList.add('on');
   }));
+
+  // 每块代码右上角挂一个复制按钮，纯本地实现，不依赖外部库
+  document.querySelectorAll('.item pre').forEach(pre => {
+    const bar = document.createElement('div');
+    bar.className = 'copybar';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = '复制';
+    btn.addEventListener('click', async () => {
+      const code = pre.querySelector('code');
+      const text = (code ? code.innerText : pre.innerText) || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = '复制好了';
+      } catch (err) {
+        btn.textContent = '没复制上';
+      }
+      setTimeout(() => { btn.textContent = '复制'; }, 1200);
+    });
+    bar.appendChild(btn);
+    pre.parentNode.insertBefore(bar, pre);
+  });
 </script>
 </body>
 </html>
