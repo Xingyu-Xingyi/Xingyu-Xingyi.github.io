@@ -54,10 +54,10 @@ def build(name, brand, sub, current):
     if n != 1:
         raise SystemExit(f"{name}: 占位块数量不对（{n}）")
 
-    if 'href="theme.css"' not in new:
+    if 'href="assets/css/theme.css"' not in new:
         new = new.replace(
             "</title>",
-            '</title>\n<link rel="stylesheet" href="theme.css">',
+            '</title>\n<link rel="stylesheet" href="assets/css/theme.css">',
             1,
         )
     if new != html:
